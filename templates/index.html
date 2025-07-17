@@ -1,78 +1,87 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Portfolio</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        // Theme toggle
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggle = document.getElementById("theme-toggle");
+            const html = document.documentElement;
+            const savedTheme = localStorage.getItem("theme") || "light";
+            html.setAttribute("data-theme", savedTheme);
+            toggle.textContent = savedTheme === "dark" ? "🌞" : "🌙";
+
+            toggle.addEventListener("click", () => {
+                const current = html.getAttribute("data-theme");
+                const next = current === "dark" ? "light" : "dark";
+                html.setAttribute("data-theme", next);
+                localStorage.setItem("theme", next);
+                toggle.textContent = next === "dark" ? "🌞" : "🌙";
+            });
+
+            document.getElementById("menu-toggle").addEventListener("click", () => {
+                document.getElementById("sidebar").classList.toggle("active");
+            });
+        });
+    </script>
 </head>
 <body>
-  <div class="sidebar" id="sidebar">
-    <button id="closeSidebar">×</button>
-    <h1>My Portfolio</h1>
-    <ul id="sectionLinks">
-      {% for section in sections %}
-        <li><a href="#{{ section.title | lower | replace(' ', '-') }}">{{ section.title }}</a></li>
-      {% endfor %}
-    </ul>
-    <div class="theme-toggle">
-      <button id="themeToggle">🌞/🌙</button>
-    </div>
-  </div>
-
-  <div class="topbar">
-    <button id="toggleSidebar">☰</button>
-  </div>
-
-  <div class="content" id="mainContent">
-    {% for section in sections %}
-      <div class="section" id="{{ section.title | lower | replace(' ', '-') }}">
-        <h2>{{ section.title }}</h2>
-        <div class="cards">
-          {% for item in section["items"] %}
-            <div class="card">
-              <h3>{{ item.title }}</h3>
-              <p>{{ item.description }}</p>
-
-              {% if item.image %}
-                <img src="{{ url_for('static', filename='uploads/' ~ item.image) }}" alt="Image">
-              {% endif %}
-
-              {% if item.pdf %}
-                <p><a href="{{ url_for('static', filename='uploads/' ~ item.pdf) }}" target="_blank">View Document</a></p>
-              {% endif %}
-
-              {% if item.icon %}
-                <p><img src="{{ url_for('static', filename='uploads/' ~ item.icon) }}" alt="Icon" class="icon-image" /></p>
-              {% endif %}
-            </div>
-          {% endfor %}
+    <div class="container">
+        <button id="menu-toggle">☰</button>
+        <div id="sidebar">
+            <h2>My Portfolio</h2>
+            <button id="theme-toggle">🌙</button>
+            <ul>
+                <li onclick="showSection('home')">Home</li>
+                <li onclick="showSection('about')">About Me</li>
+                <li onclick="showSection('projects')">Projects</li>
+                <li onclick="showSection('skills')">Skills</li>
+                <li onclick="showSection('timeline')">Timeline</li>
+                <li onclick="showSection('resume')">Resume</li>
+                <li onclick="showSection('education')">Education</li>
+                <li onclick="showSection('experience')">Work Experience</li>
+                <li onclick="showSection('certifications')">Certifications</li>
+                <li onclick="showSection('languages')">Languages</li>
+                <li onclick="showSection('tools')">Tools & Technologies</li>
+                <li onclick="showSection('contact')">Contact</li>
+            </ul>
         </div>
-      </div>
-    {% endfor %}
-  </div>
 
-  <script>
-    const toggleSidebar = document.getElementById('toggleSidebar');
-    const closeSidebar = document.getElementById('closeSidebar');
-    const sidebar = document.getElementById('sidebar');
-    const themeToggle = document.getElementById('themeToggle');
-    const html = document.documentElement;
+        <div id="content">
+            {% for section_id, items in sections.items() %}
+            <section id="{{ section_id }}" class="section">
+                <h2>{{ section_titles[section_id] }}</h2>
+                {% for item in items %}
+                    <div class="card">
+                        {% if item.title %}<h3>{{ item.title }}</h3>{% endif %}
+                        {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+                        {% if item.image %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ item.image) }}" alt="Image">
+                        {% endif %}
+                        {% if item.document %}
+                            <p><a href="{{ url_for('static', filename='uploads/' ~ item.document) }}" target="_blank">📄 View Document</a></p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </section>
+            {% endfor %}
+        </div>
+    </div>
 
-    toggleSidebar.onclick = () => sidebar.style.left = '0';
-    closeSidebar.onclick = () => sidebar.style.left = '-260px';
+    <script>
+        function showSection(id) {
+            document.querySelectorAll(".section").forEach(s => s.style.display = "none");
+            const section = document.getElementById(id);
+            if (section) section.style.display = "block";
+        }
 
-    themeToggle.onclick = () => {
-      const current = html.getAttribute('data-theme');
-      const newTheme = current === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-    };
-
-    window.onload = () => {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) html.setAttribute('data-theme', savedTheme);
-    };
-  </script>
+        // Show all by default on first load
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".section").forEach(s => s.style.display = "block");
+        });
+    </script>
 </body>
 </html>
