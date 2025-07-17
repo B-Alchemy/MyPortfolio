@@ -1,148 +1,91 @@
-body.portfolio {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    transition: background 0.3s, color 0.3s;
-    background: #f4f4f4;
-    color: #111;
-  }
-  
-  body.portfolio.dark {
-    background: #121212;
-    color: #f0f0f0;
-  }
-  
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #222;
-    color: white;
-    padding: 1rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  
-  header h1 {
-    margin: 0;
-    font-size: 1.5rem;
-  }
-  
-  #menu-toggle {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
-  
-  body.portfolio.dark #menu-toggle {
-    color: white;
-  }
-  
-  body.portfolio:not(.dark) #menu-toggle {
-    color: black;
-  }
-  
-  #theme-toggle {
-    cursor: pointer;
-    font-size: 1.2rem;
-  }
-  
-  #sidebar {
-    width: 220px;
-    background: #333;
-    color: white;
-    position: fixed;
-    top: 64px;
-    left: -220px;
-    height: 100%;
-    overflow-y: auto;
-    transition: left 0.3s;
-    z-index: 999;
-  }
-  
-  #sidebar.open {
-    left: 0;
-  }
-  
-  #sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  #sidebar li {
-    border-bottom: 1px solid #444;
-  }
-  
-  #sidebar a {
-    display: block;
-    padding: 1rem;
-    color: white;
-    text-decoration: none;
-  }
-  
-  #sidebar a:hover {
-    background: #555;
-  }
-  
-  main {
-    margin-left: 0;
-    padding: 2rem;
-    transition: margin-left 0.3s;
-  }
-  
-  @media (min-width: 768px) {
-    #sidebar.open + main {
-      margin-left: 220px;
-    }
-  }
-  
-  section {
-    margin-bottom: 3rem;
-  }
-  
-  section h2 {
-    margin-bottom: 1rem;
-    border-bottom: 2px solid #ccc;
-    padding-bottom: 0.5rem;
-  }
-  
-  .card {
-    background: #fff;
-    color: #000;
-    border-radius: 12px;
-    padding: 1rem;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    margin-bottom: 1.5rem;
-  }
-  
-  body.portfolio.dark .card {
-    background: #1e1e1e;
-    color: #fff;
-  }
-  
-  .card img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-top: 0.5rem;
-  }
-  
-  .card a {
-    display: inline-block;
-    margin-top: 0.5rem;
-    color: #007BFF;
-  }
-  
-  .error-page {
-    text-align: center;
-    padding: 5rem 2rem;
-  }
-  
-  .error-page h1 {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-  }
-  
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #222;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+[data-theme="dark"] body {
+  background-color: #111;
+  color: #f9f9f9;
+}
+
+.menu-button {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 1000;
+  background: none;
+  border: none;
+  color: #000;
+}
+
+[data-theme="dark"] .menu-button {
+  color: white;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  overflow-y: auto;
+  transition: left 0.3s;
+  z-index: 999;
+}
+
+.sidebar.visible {
+  left: 0;
+}
+
+.sidebar h2 {
+  margin-top: 0;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #555;
+}
+
+.sidebar ul li:hover {
+  background-color: #444;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 1000;
+  background: #ccc;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+[data-theme="dark"] .theme-toggle {
+  background: #444;
+  color: white;
+}
+
+.content-section {
+  display: none;
+  padding: 80px 20px 20px 20px;
+}
+
+.content-section.visible {
+  display: block;
+}

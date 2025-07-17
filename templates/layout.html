@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}My Portfolio{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="sidebar-toggle" onclick="toggleSidebar()">☰</div>
+
+  <div class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="showSection('home')">Home</li>
+      <li onclick="showSection('about')">About Me</li>
+      <li onclick="showSection('projects')">Projects</li>
+      <li onclick="showSection('skills')">Skills</li>
+      <li onclick="showSection('experience')">Work Experience</li>
+      <li onclick="showSection('education')">Education</li>
+      <li onclick="showSection('certifications')">Certifications</li>
+      <li onclick="showSection('resume')">Resume</li>
+      <li onclick="showSection('contact')">Contact</li>
+      <li onclick="showSection('tools')">Tools & Technologies</li>
+      <li onclick="showSection('languages')">Languages</li>
+      <li onclick="showSection('timeline')">Timeline</li>
+    </ul>
+  </div>
+
+  <div class="theme-toggle">
+    <button onclick="toggleTheme()">🌓</button>
+  </div>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <script src="{{ url_for('static', filename='js/theme_toggle.js') }}"></script>
+</body>
+</html>

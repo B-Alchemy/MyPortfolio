@@ -1,1 +1,10 @@
-[]
+[
+    {
+      "title": "Python for Data Visualization",
+      "description": "Completed a course on Python for Data Visualization by Edureka on Coursera.",
+      "image": "uploads/python_cert.png",
+      "pdf": "uploads/python_cert.pdf",
+      "icon": "fa-solid fa-certificate"
+    }
+  ]
+  

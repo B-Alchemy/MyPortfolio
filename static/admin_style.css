@@ -1,137 +1,92 @@
-body.admin {
-    display: flex;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f7f7f7;
-    color: #222;
-  }
-  
-  body.admin.dark {
-    background: #111;
-    color: #eee;
-  }
-  
-  .sidebar {
-    width: 220px;
-    background: #222;
-    color: white;
-    height: 100vh;
-    position: fixed;
-    overflow-y: auto;
-  }
-  
-  .sidebar h2 {
-    text-align: center;
-    padding: 1rem;
-    background: #111;
-    margin: 0;
-    font-size: 1.2rem;
-  }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar li {
-    border-bottom: 1px solid #444;
-  }
-  
-  .sidebar a {
-    display: block;
-    padding: 1rem;
-    color: white;
-    text-decoration: none;
-  }
-  
-  .sidebar a:hover {
-    background: #444;
-  }
-  
-  .content {
-    margin-left: 220px;
-    padding: 2rem;
-    flex: 1;
-  }
-  
-  .content h1 {
-    margin-top: 0;
-  }
-  
-  form label {
-    display: block;
-    margin-top: 1rem;
-    font-weight: bold;
-  }
-  
-  form input, form textarea {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.25rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-  }
-  
-  form input[type="file"] {
-    padding: 0.2rem;
-  }
-  
-  form button {
-    margin-top: 1rem;
-    padding: 0.6rem 1.2rem;
-    background: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  
-  form button:hover {
-    background: #0056b3;
-  }
-  
-  .entries {
-    margin-top: 2rem;
-  }
-  
-  .entry {
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background: #fff;
-    color: #000;
-  }
-  
-  body.admin.dark .entry {
-    background: #1a1a1a;
-    color: #fff;
-  }
-  
-  .entry h3 {
-    margin-top: 0;
-  }
-  
-  .entry img {
-    max-width: 100px;
-    border-radius: 6px;
-    margin-top: 0.5rem;
-  }
-  
-  .entry a {
-    display: inline-block;
-    margin-top: 0.5rem;
-    color: #007BFF;
-  }
-  
-  .entry form {
-    margin-top: 1rem;
-  }
-  
-  .flash {
-    color: green;
-    margin-top: 1rem;
-  }
-  
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+}
+
+[data-theme="dark"] body {
+  background: #1e1e1e;
+  color: white;
+}
+
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 230px;
+  height: 100%;
+  background-color: #222;
+  color: #fff;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.admin-sidebar h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.admin-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-sidebar ul li {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #333;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.admin-sidebar ul li:hover {
+  background-color: #555;
+}
+
+.admin-sidebar ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.admin-main {
+  margin-left: 250px;
+  padding: 30px;
+}
+
+.admin-tab {
+  display: none;
+}
+
+form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+form input[type="text"],
+form textarea,
+form input[type="file"] {
+  margin-bottom: 15px;
+  padding: 8px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 600px;
+}
+
+form button {
+  width: fit-content;
+  padding: 10px 20px;
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+form button:hover {
+  background-color: #0055aa;
+}
+
+.file-preview {
+  margin-top: 10px;
+}

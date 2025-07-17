@@ -1,52 +1,283 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <title>Edit {{ section|capitalize }}</title>
+  <title>Admin - Edit Content</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='admin_style.css') }}">
 </head>
-<body class="admin">
-  <div class="sidebar">
-    <a href="{{ url_for('admin_dashboard') }}">← Dashboard</a>
-    <a href="{{ url_for('logout') }}">Logout</a>
+<body>
+  <div class="admin-sidebar">
+    <h2>Admin Panel</h2>
+    <ul>
+      <li onclick="showTab('about')">About Me</li>
+      <li onclick="showTab('projects')">Projects</li>
+      <li onclick="showTab('skills')">Skills</li>
+      <li onclick="showTab('work')">Work Experience</li>
+      <li onclick="showTab('education')">Education</li>
+      <li onclick="showTab('certifications')">Certifications</li>
+      <li onclick="showTab('resume')">Resume</li>
+      <li onclick="showTab('contact')">Contact</li>
+      <li onclick="showTab('tools')">Tools & Technologies</li>
+      <li onclick="showTab('languages')">Languages</li>
+      <li onclick="showTab('timeline')">Timeline</li>
+      <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
   </div>
-  <div class="content">
-    <h1>Edit {{ section|capitalize }}</h1>
 
-    <form method="POST" enctype="multipart/form-data" class="edit-form">
-      <input type="text" name="title" placeholder="Title" required>
-      <textarea name="description" placeholder="Description" required></textarea>
-      <label>Upload Image (optional)</label>
-      <input type="file" name="image">
-      <label>Upload PDF/Doc (optional)</label>
-      <input type="file" name="pdf">
-      <button type="submit">Add Entry</button>
-    </form>
+  <div class="admin-main">
+    <h1>Manage Portfolio Content</h1>
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <div class="flash">{{ messages[0] }}</div>
+    <!-- ABOUT TAB -->
+    <div class="admin-tab" id="about">
+      <h2>About Me</h2>
+      <form method="POST" action="{{ url_for('save_about') }}">
+        <label>Title:</label>
+        <input type="text" name="title" value="{{ about.title if about }}">
+
+        <label>Description:</label>
+        <textarea name="description">{{ about.description if about }}</textarea>
+
+        <button type="submit">Save</button>
+      </form>
+    </div>
+
+    <!-- PROJECTS TAB -->
+    <div class="admin-tab" id="projects" style="display:none;">
+      <h2>Projects</h2>
+      <form method="POST" action="{{ url_for('add_project') }}" enctype="multipart/form-data">
+        <label>Title:</label>
+        <input type="text" name="title" required>
+
+        <label>Description:</label>
+        <textarea name="description" required></textarea>
+
+        <label>Image:</label>
+        <input type="file" name="image" accept="image/*">
+
+        <button type="submit">Add Project</button>
+      </form>
+
+      {% for p in projects %}
+        <div class="card">
+          <h3>{{ p.title }}</h3>
+          <p>{{ p.description }}</p>
+          {% if p.image %}
+            <img src="{{ url_for('static', filename=p.image) }}" width="200">
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- SKILLS TAB -->
+    <div class="admin-tab" id="skills" style="display:none;">
+      <h2>Skills</h2>
+      <form method="POST" action="{{ url_for('add_skill') }}">
+        <label>Skill Name:</label>
+        <input type="text" name="name" required>
+
+        <label>Level:</label>
+        <input type="text" name="level" required>
+
+        <button type="submit">Add Skill</button>
+      </form>
+
+      {% for s in skills %}
+        <div class="card">
+          <strong>{{ s.name }}</strong>: {{ s.level }}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- WORK EXPERIENCE TAB -->
+    <div class="admin-tab" id="work" style="display:none;">
+      <h2>Work Experience</h2>
+      <form method="POST" action="{{ url_for('add_work') }}">
+        <label>Company:</label>
+        <input type="text" name="company" required>
+
+        <label>Role:</label>
+        <input type="text" name="role" required>
+
+        <label>Duration:</label>
+        <input type="text" name="duration" required>
+
+        <label>Description:</label>
+        <textarea name="description" required></textarea>
+
+        <button type="submit">Add Experience</button>
+      </form>
+
+      {% for w in work %}
+        <div class="card">
+          <h3>{{ w.role }} at {{ w.company }}</h3>
+          <p><strong>{{ w.duration }}</strong></p>
+          <p>{{ w.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- EDUCATION TAB -->
+    <div class="admin-tab" id="education" style="display:none;">
+      <h2>Education</h2>
+      <form method="POST" action="{{ url_for('add_education') }}">
+        <label>Institution:</label>
+        <input type="text" name="institution" required>
+
+        <label>Degree:</label>
+        <input type="text" name="degree" required>
+
+        <label>Years:</label>
+        <input type="text" name="years" required>
+
+        <label>Description:</label>
+        <textarea name="description"></textarea>
+
+        <button type="submit">Add Education</button>
+      </form>
+
+      {% for e in education %}
+        <div class="card">
+          <h3>{{ e.degree }} at {{ e.institution }}</h3>
+          <p><strong>{{ e.years }}</strong></p>
+          <p>{{ e.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- CERTIFICATIONS TAB -->
+    <div class="admin-tab" id="certifications" style="display:none;">
+      <h2>Certifications</h2>
+      <form method="POST" action="{{ url_for('add_certification') }}" enctype="multipart/form-data">
+        <label>Title:</label>
+        <input type="text" name="title" required>
+
+        <label>Description:</label>
+        <textarea name="description"></textarea>
+
+        <label>Upload Certificate (PDF or Image):</label>
+        <input type="file" name="certificate_file" accept=".pdf,.jpg,.png">
+
+        <button type="submit">Add Certification</button>
+      </form>
+
+      {% for c in certifications %}
+        <div class="card">
+          <h3>{{ c.title }}</h3>
+          <p>{{ c.description }}</p>
+          {% if c.filename %}
+            <a href="{{ url_for('static', filename=c.filename) }}" target="_blank">View Certificate</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- RESUME TAB -->
+    <div class="admin-tab" id="resume" style="display:none;">
+      <h2>Resume</h2>
+      <form method="POST" action="{{ url_for('upload_resume') }}" enctype="multipart/form-data">
+        <label>Upload Resume (PDF, DOCX):</label>
+        <input type="file" name="resume_file" accept=".pdf,.doc,.docx" required>
+        <button type="submit">Upload</button>
+      </form>
+      {% if resume_file %}
+        <div class="file-preview">
+          <p><strong>Uploaded File:</strong> {{ resume_file }}</p>
+          <a href="{{ url_for('static', filename=resume_file) }}" target="_blank">View</a>
+        </div>
       {% endif %}
-    {% endwith %}
+    </div>
 
-    <h2>Existing Entries</h2>
-    {% for item in data %}
-      <div class="entry">
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.description }}</p>
-        {% if item.image %}
-          <img src="{{ url_for('uploaded_file', filename='images/' + item.image) }}" width="100" />
-        {% endif %}
-        {% if item.pdf %}
-          <p><a href="{{ url_for('uploaded_file', filename='pdfs/' + item.pdf) }}" target="_blank">View PDF</a></p>
-        {% endif %}
-        <form method="POST" action="{{ url_for('delete_entry', section=section, index=loop.index0) }}">
-          <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
-        </form>
-      </div>
-    {% else %}
-      <p>No entries yet.</p>
-    {% endfor %}
+    <!-- CONTACT TAB -->
+    <div class="admin-tab" id="contact" style="display:none;">
+      <h2>Contact Information</h2>
+      <form method="POST" action="{{ url_for('save_contact') }}">
+        <label>Email:</label>
+        <input type="email" name="email" value="{{ contact.email if contact }}">
+
+        <label>Phone:</label>
+        <input type="text" name="phone" value="{{ contact.phone if contact }}">
+
+        <label>Address:</label>
+        <textarea name="address">{{ contact.address if contact }}</textarea>
+
+        <label>LinkedIn:</label>
+        <input type="url" name="linkedin" value="{{ contact.linkedin if contact }}">
+
+        <label>GitHub:</label>
+        <input type="url" name="github" value="{{ contact.github if contact }}">
+
+        <button type="submit">Save</button>
+      </form>
+    </div>
+
+    <!-- TOOLS & TECHNOLOGIES TAB -->
+    <div class="admin-tab" id="tools" style="display:none;">
+      <h2>Tools & Technologies</h2>
+      <form method="POST" action="{{ url_for('add_tool') }}">
+        <label>Tool Name:</label>
+        <input type="text" name="name" required>
+
+        <label>Category:</label>
+        <input type="text" name="category">
+
+        <button type="submit">Add Tool</button>
+      </form>
+
+      {% for t in tools %}
+        <div class="card">
+          <strong>{{ t.name }}</strong> — {{ t.category }}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- LANGUAGES TAB -->
+    <div class="admin-tab" id="languages" style="display:none;">
+      <h2>Languages</h2>
+      <form method="POST" action="{{ url_for('add_language') }}">
+        <label>Language:</label>
+        <input type="text" name="name" required>
+
+        <label>Proficiency:</label>
+        <input type="text" name="proficiency" required>
+
+        <button type="submit">Add Language</button>
+      </form>
+
+      {% for l in languages %}
+        <div class="card">
+          <strong>{{ l.name }}</strong>: {{ l.proficiency }}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- TIMELINE TAB -->
+    <div class="admin-tab" id="timeline" style="display:none;">
+      <h2>Timeline</h2>
+      <form method="POST" action="{{ url_for('add_timeline') }}">
+        <label>Year/Date:</label>
+        <input type="text" name="date" required>
+
+        <label>Event:</label>
+        <textarea name="event" required></textarea>
+
+        <button type="submit">Add Entry</button>
+      </form>
+
+      {% for t in timeline %}
+        <div class="card">
+          <strong>{{ t.date }}</strong>: {{ t.event }}
+        </div>
+      {% endfor %}
+    </div>
   </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll(".admin-tab").forEach(t => t.style.display = "none");
+      const activeTab = document.getElementById(tabId);
+      if (activeTab) activeTab.style.display = "block";
+    }
+    window.onload = () => showTab("about");
+  </script>
 </body>
 </html>

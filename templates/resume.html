@@ -1,18 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>My Resume</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body class="portfolio">
-  <header>
-    <a href="{{ url_for('index') }}">← Back to Home</a>
-    <h1>Resume</h1>
-  </header>
-  <main>
-    <p>You can upload your resume in the Resume section of the admin panel. It will show here.</p>
-    <!-- Optional: auto-display uploaded resume file if present -->
-  </main>
-</body>
-</html>
+{% extends "layout.html" %}
+
+{% block title %}Resume{% endblock %}
+
+{% block content %}
+<section id="resume" class="section">
+  <h2>Resume</h2>
+
+  {% if resume and resume.title %}
+    <div class="card">
+      <h3>{{ resume.title }}</h3>
+      <p>{{ resume.description }}</p>
+      
+      {% if resume.pdf %}
+        <p><a href="{{ url_for('static', filename='uploads/' ~ resume.pdf) }}" target="_blank">📄 View Resume (PDF)</a></p>
+      {% endif %}
+
+      {% if resume.image %}
+        <img src="{{ url_for('static', filename='uploads/' ~ resume.image) }}" alt="Resume Image" style="max-width: 100%; height: auto; margin-top: 10px;">
+      {% endif %}
+    </div>
+  {% else %}
+    <p>No resume content found.</p>
+  {% endif %}
+</section>
+{% endblock %}

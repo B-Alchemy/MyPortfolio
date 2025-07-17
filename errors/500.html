@@ -1,15 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <title>500 Server Error</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>500 - Internal Server Error</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='js/theme_toggle.js') }}" defer></script>
+  <style>
+    .error-container {
+      text-align: center;
+      padding: 80px 20px;
+    }
+    .error-container h1 {
+      font-size: 5rem;
+      margin-bottom: 10px;
+    }
+    .error-container p {
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+    }
+    .error-container a {
+      font-size: 1rem;
+      padding: 10px 20px;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+    .error-container a:hover {
+      background-color: var(--primary-dark);
+    }
+  </style>
 </head>
-<body class="portfolio">
-  <main class="error-page">
+<body>
+  <div class="error-container">
     <h1>500</h1>
-    <p>Something went wrong on the server.</p>
-    <a href="{{ url_for('index') }}">Return to Home</a>
-  </main>
+    <p>Something went wrong on our end.</p>
+    <a href="{{ url_for('home') }}">Return to Homepage</a>
+  </div>
 </body>
 </html>
