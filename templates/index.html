@@ -1,66 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>My Portfolio</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="portfolio">
+<body>
+  <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
 
-  <header>
-    <button id="menu-toggle">☰</button>
-    <h1>My Portfolio</h1>
-    <div id="theme-toggle">🌞/🌙</div>
-  </header>
-
-  <nav id="sidebar">
+  <div class="sidebar" id="sidebar">
     <ul>
-      {% for section in content %}
-        <li><a href="#{{ section }}">{{ section.replace('_', ' ') | capitalize }}</a></li>
-      {% endfor %}
+      <li onclick="showSection('home')">Home</li>
+      <li onclick="showSection('about')">About Me</li>
+      <li onclick="showSection('projects')">Projects</li>
+      <li onclick="showSection('skills')">Skills</li>
+      <li onclick="showSection('work')">Work Experience</li>
+      <li onclick="showSection('education')">Education</li>
+      <li onclick="showSection('certifications')">Certifications</li>
+      <li onclick="showSection('resume')">Resume</li>
+      <li onclick="showSection('contact')">Contact</li>
+      <li onclick="showSection('tools')">Tools & Technologies</li>
+      <li onclick="showSection('languages')">Languages</li>
+      <li onclick="showSection('timeline')">Timeline</li>
     </ul>
-  </nav>
+  </div>
 
-  <main>
-    {% for section, items in content.items() %}
-      <section id="{{ section }}">
-        <h2>{{ section.replace('_', ' ') | capitalize }}</h2>
-        {% for item in items %}
-          <div class="card">
-            <h3>{{ item.title }}</h3>
-            <p>{{ item.description }}</p>
-            {% if item.image %}
-              <img src="{{ url_for('uploaded_file', filename='images/' + item.image) }}" alt="{{ item.title }}">
-            {% endif %}
-            {% if item.pdf %}
-              <a href="{{ url_for('uploaded_file', filename='pdfs/' + item.pdf) }}" target="_blank">View Document</a>
-            {% endif %}
-          </div>
-        {% endfor %}
-      </section>
-    {% endfor %}
-  </main>
+  <div class="content">
+
+    <div class="section" id="home">
+      <h1>Welcome to My Portfolio</h1>
+    </div>
+
+    <div class="section" id="about">
+      <h2>About Me</h2>
+      <p>{{ about_data.description }}</p>
+    </div>
+
+    <div class="section" id="projects">
+      <h2>Projects</h2>
+      {% for project in projects %}
+        <div class="card">
+          <h3>{{ project.title }}</h3>
+          <p>{{ project.description }}</p>
+          {% if project.image %}
+            <img src="{{ url_for('static', filename=project.image) }}" alt="Project Image">
+          {% endif %}
+          {% if project.pdf %}
+            <a href="{{ url_for('static', filename=project.pdf) }}" target="_blank">View Document</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="section" id="skills">
+      <h2>Skills</h2>
+      {% for skill in skills %}
+        <div class="card">
+          <h3>{{ skill.title }}</h3>
+          <p>{{ skill.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="section" id="work">
+      <h2>Work Experience</h2>
+      {% for item in work %}
+        <div class="card">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="section" id="education">
+      <h2>Education</h2>
+      {% for item in education %}
+        <div class="card">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="section" id="certifications">
+      <h2>Certifications</h2>
+      {% for item in certifications %}
+        <div class="card">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="section" id="resume">
+      <h2>Resume</h2>
+      {% if resume_file %}
+        <a href="{{ url_for('static', filename=resume_file) }}" target="_blank">View Resume</a>
+      {% else %}
+        <p>No resume uploaded yet.</p>
+      {% endif %}
+    </div>
+
+    <div class="section" id="contact">
+      <h2>Contact</h2>
+      {% for item in contact %}
+        <div class="card">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="section" id="tools">
+      <h2>Tools & Technologies</h2>
+      {% for item in tools %}
+        <div class="card">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="section" id="languages">
+      <h2>Languages</h2>
+      {% for item in languages %}
+        <div class="card">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="section" id="timeline">
+      <h2>Timeline</h2>
+      {% for item in timeline %}
+        <div class="card">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+
+  <div class="theme-toggle" onclick="toggleTheme()">🌙</div>
 
   <script>
-    const toggle = document.getElementById('theme-toggle');
-    const body = document.body;
-    const sidebar = document.getElementById('sidebar');
-    const menu = document.getElementById('menu-toggle');
-
-    // Theme toggle
-    toggle.onclick = () => {
-      const mode = body.classList.toggle('dark') ? 'dark' : 'light';
-      localStorage.setItem('theme', mode);
-    };
-
-    // Apply saved theme
-    if (localStorage.getItem('theme') === 'dark') {
-      body.classList.add('dark');
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+      const section = document.getElementById(id);
+      if (section) section.style.display = 'block';
     }
 
-    // Sidebar toggle
-    menu.onclick = () => sidebar.classList.toggle('open');
-  </script>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("show");
+    }
 
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isLight = html.getAttribute("data-theme") === "light";
+      html.setAttribute("data-theme", isLight ? "dark" : "light");
+      localStorage.setItem("theme", isLight ? "dark" : "light");
+    }
+
+    window.onload = function () {
+      const savedTheme = localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+      showSection("home");
+    }
+  </script>
 </body>
 </html>
