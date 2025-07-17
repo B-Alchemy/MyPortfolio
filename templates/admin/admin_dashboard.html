@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin_style.css') }}">
+</head>
+<body class="admin">
+  <div class="sidebar">
+    <h2>Admin</h2>
+    <ul>
+      <li><a href="{{ url_for('edit_section', section='about') }}">About Me</a></li>
+      <li><a href="{{ url_for('edit_section', section='projects') }}">Projects</a></li>
+      <li><a href="{{ url_for('edit_section', section='skills') }}">Skills</a></li>
+      <li><a href="{{ url_for('edit_section', section='work_experience') }}">Work Experience</a></li>
+      <li><a href="{{ url_for('edit_section', section='education') }}">Education</a></li>
+      <li><a href="{{ url_for('edit_section', section='certifications') }}">Certifications</a></li>
+      <li><a href="{{ url_for('edit_section', section='resume') }}">Resume</a></li>
+      <li><a href="{{ url_for('edit_section', section='contact') }}">Contact</a></li>
+      <li><a href="{{ url_for('edit_section', section='tools') }}">Tools & Tech</a></li>
+      <li><a href="{{ url_for('edit_section', section='languages') }}">Languages</a></li>
+      <li><a href="{{ url_for('edit_section', section='timeline') }}">Timeline</a></li>
+    </ul>
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+  </div>
+  <div class="content">
+    <h1>Welcome to the Admin Dashboard</h1>
+    <p>Select a section from the sidebar to manage content.</p>
+  </div>
+</body>
+</html>

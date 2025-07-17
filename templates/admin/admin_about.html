@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit {{ section|capitalize }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin_style.css') }}">
+</head>
+<body class="admin">
+  <div class="sidebar">
+    <a href="{{ url_for('admin_dashboard') }}">← Dashboard</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </div>
+  <div class="content">
+    <h1>Edit {{ section|capitalize }}</h1>
+
+    <form method="POST" enctype="multipart/form-data" class="edit-form">
+      <input type="text" name="title" placeholder="Title" required>
+      <textarea name="description" placeholder="Description" required></textarea>
+      <label>Upload Image (optional)</label>
+      <input type="file" name="image">
+      <label>Upload PDF/Doc (optional)</label>
+      <input type="file" name="pdf">
+      <button type="submit">Add Entry</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+
+    <h2>Existing Entries</h2>
+    {% for item in data %}
+      <div class="entry">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.description }}</p>
+        {% if item.image %}
+          <img src="{{ url_for('uploaded_file', filename='images/' + item.image) }}" width="100" />
+        {% endif %}
+        {% if item.pdf %}
+          <p><a href="{{ url_for('uploaded_file', filename='pdfs/' + item.pdf) }}" target="_blank">View PDF</a></p>
+        {% endif %}
+        <form method="POST" action="{{ url_for('delete_entry', section=section, index=loop.index0) }}">
+          <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+        </form>
+      </div>
+    {% else %}
+      <p>No entries yet.</p>
+    {% endfor %}
+  </div>
+</body>
+</html>
